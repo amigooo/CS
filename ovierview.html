@@ -1,0 +1,205 @@
+<%-- _LocalBinding --%>
+<%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c" meta:progid="SharePoint.WebPartPage.Document" meta:webpartpageexpansion="full"  %>
+<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Import Namespace="Microsoft.SharePoint" %> <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+
+<asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server">
+
+<link href="../_css/projectapproval.css" type="text/css" rel="stylesheet" />
+<script src="../_js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="../_js/custom.js" type="text/javascript"></script>
+<script src="../_js/overview_eckdaten.js" type="text/javascript"></script> 
+<script src="../_js/overview_checkpoints.js" type="text/javascript"></script>
+<script src="../_js/overview_documents.js" type="text/javascript"></script>
+<script src="../_js/overview_nachkontrolle.js" type="text/javascript"></script>
+<script src="../_js/openDialog.js" type="text/javascript"></script>
+<script src="../_js/workflow.js" type="text/javascript"></script>
+
+
+<table>	
+	<tr>
+		<td valign="top">
+			<table class="attableRoot">
+				<tr>
+					<td id="atTitle"  class="atTitle" colspan="2" >Project Approval</td>
+
+					<td align="right" class="atWhiteBG">
+						<img id="atPADataLink" title="Workflowhistory" class="atNoBorder" onclick="showDialog('Workflowhistory',null);" alt="Workflowhistory" src="/_layouts/15/NintexWorkflow/images/WorkflowStatusECB.gif"/>
+						
+					</td>
+					<td align="right" class="atWhiteBG">
+						
+						<img id="atPADataLink" title="Refresh" class="atNoBorder" onclick="init();" alt="REFRESH" src="_layouts/15/images/staticrefresh.gif"/>
+					</td>
+
+
+				</tr>
+				
+				<tr>
+					<td class="atBottomLine" colspan="4">
+						<br/>
+					</td>
+				</tr>
+
+				<tr>
+					<td valign="top" style="width:49%">
+						<table class="attableBox" cellpadding="3">
+							<tr class="attableBoxHeader">
+								<td id="atHeaderMasterData" class="titleRowLeft" colspan="2">
+								ECKDATEN / BASIC DATA</td>
+								<td align="right" class="atWhiteBG">
+										<img id="atPADataLink"  name=""  class="atNoBorder" onclick="showDialog('EditUnterweisung',null);" title="EDIT" alt="EDIT" src="../images/edit.png"/>
+								</td>				
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderProjektauftrag" class="eckdatenLeftColumn">
+								Projektauftrag / Project order</td>
+								<td id="atProjektauftrag" class="eckdatenRightColumn"></td>
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderProjekttype" class="eckdatenLeftColumn">
+								Projekttype / Type of project</td>
+								<td id="atProjekttype" class="eckdatenRightColumn"></td>
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderStandort" class="eckdatenLeftColumn">
+								Standort / Location</td>
+							<td id="atStandort" class="eckdatenRightColumn"></td>
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderSponsor" class="eckdatenLeftColumn">
+								Projektauftraggeber / Sponsor</td>
+								<td id="atSponsor" class="eckdatenRightColumn"></td>
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderManager" class="eckdatenLeftColumn">
+								Projektleiter / Project manager</td>
+								<td id="atManager" class="eckdatenRightColumn"></td>
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderProjektstart" class="eckdatenLeftColumn">
+								Projektstart / Project start</td>
+								<td id="atProjektstart" class="eckdatenRightColumn"></td>
+							</tr>
+													
+							<tr class="attableBoxText">
+								<td id="atHeaderProjektende" class="eckdatenLeftColumn">
+								Projektende / Project end</td>
+								<td id="atProjektende" class="eckdatenRightColumn"></td>
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderBewertungsdatum" class="eckdatenLeftColumn">
+								Bewertungsdatum / Date of review</td>
+								<td id="atBewertungsdatum" class="eckdatenRightColumn"></td>
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderBewertungsergebnis" class="eckdatenLeftColumn">
+								Bewertungsergebnis / Result of review</td>
+								<td id="atBewertungsergebnis" class="eckdatenRightColumn"></td>
+							</tr>
+							<tr class="attableBottomLine">
+								<td id="atHeaderBottomline" colspan="2"></td>
+							</tr>
+
+						</table>
+						
+						<br/><br/>
+						
+						
+						<table id="atPADocuments" class="attableBox" cellpadding="3">
+							<tr class="attableBoxHeader">
+								<td id="atHeaderatPADocuments" colspan="3" class="titleRowLeft">
+								DOKUMENTE / DOCUMENTS</td>
+								<td align="right" class="atWhiteBG">
+										<img id="atPADataLink"  name=""  class="atNoBorder" onclick="createFormular();" title="WRITE" alt="WRITE" src="../images/NeuesDokument.png"/>
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+						
+						
+					</td>
+					
+					<td valign="top" style="width:2%"/>
+					
+					
+					<td valign="top" style="width:49%">
+					
+						<table id="atUnterweisungsinhalt" class="attableBox" cellpadding="3" style="display:none">
+							<tr class="attableBoxHeader">
+								<td id="atHeaderUnterweisungsinhalt" colspan="2" class="titleRowLeft">
+								UNTERWEISUNGINHALT</td>
+								<td class="atWhiteBG">
+									
+								</td>
+							</tr>
+
+						</table>
+						
+						
+
+						<table id="atCheckpoints" class="attableBox" cellpadding="3" >
+							<tr class="attableBoxHeader">
+								<td id="atHeaderCheckpoints" colspan="3" class="titleRowLeft">
+								KONTROLLPUNKTE / CHECKPOINTS</td>
+								<td class="atWhiteBG">
+										<img class="atNoBorder" onclick="showDialog('AddCheckpoint',null);" title="ADD" alt="ADD" src="../images/add.png"/>
+								</td>
+							</tr>
+
+						</table>
+						
+						<br/><br/>
+						
+						<table id="atProjectApproval" class="attableBox" cellpadding="3">
+							<tr class="attableBoxHeader">
+								<td id="atHeaderProjectApproval" colspan="2" class="titleRowLeft" >
+								ÜBERPRÜFUNG / APPROVAL</td>
+								<td class="atWhiteBG">
+									<img class="atNoBorder" title="Approval" alt="Approval"  onclick="createApproval();" src="../images/approval_small.png"/>
+								</td>
+
+							</tr>
+							<tr class="attableBoxText">
+								<td id="atHeaderProjektstatus" class="eckdatenLeftColumn">
+								Projektstatus / Projectstatus</td>
+								<td id="atProjektstatus"  class="eckdatenRightColumn"></td>
+								<td id="atProjektstatusWF"  class="atWhiteBG"></td>
+
+							</tr>
+							<tr class="attableBottomLine">
+								<td id="atHeaderBottomline" colspan="2"></td>
+							</tr>
+
+
+						</table>
+						
+						<br/><br/>
+						
+						
+						<table id="atNachkontrolle" class="attableBox" cellpadding="3">
+							<tr class="attableBoxHeader">
+								<td id="atHeaderatNachkontrolle" colspan="3" class="titleRowLeft" style="width:560px">
+								NACHKONTROLLE / REVIEW</td>
+								<td class="atWhiteBG" style="width:15px;">
+									<img id="addNachkontrolleBtn" class="atNoBorder" onclick="showDialog('AddReview',null);"  alt="ADD" src="../images/add.png"/>
+								</td>
+
+							</tr>
+						</table>
+
+
+					</td>		
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<div id="WSOutput">
+</div>
+
+</asp:Content>
